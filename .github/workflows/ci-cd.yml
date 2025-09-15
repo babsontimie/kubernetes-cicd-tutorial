@@ -35,7 +35,8 @@ jobs:
           #git config --global credential.helper store
           #echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
           # Secure one-shot credential helper (no writing to disk)
-           git config --global credential.helper '!f() { echo "username=oauth2"; echo "password=${GIT_TOKEN}"; }; f'
+
+          git config --global credential.helper '!f() { echo "username=oauth2"; echo "password=${GIT_TOKEN}"; }; f'
 
           # Remove any existing gitops directory
           rm -rf gitops
