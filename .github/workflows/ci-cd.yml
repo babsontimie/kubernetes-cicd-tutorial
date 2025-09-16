@@ -33,9 +33,11 @@ jobs:
           REPO: ${{ github.repository }}
           SHA: ${{ github.sha }}
         run: |
-          git clone https://oauth2:${GIT_TOKEN}@github.com/babsontimie/grade-api-gitops.git gitops
+          # git clone https://oauth2:${GIT_TOKEN}@github.com/babsontimie/grade-api-gitops.git gitops
+          # cd gitops
+          git clone https://babsontimie:${{ secrets.GH_PAT }}@github.com/babsontimie/grade-api-gitops.git
           cd gitops
-
+          cat deployment.yaml
           git config --global credential.helper '!f() { echo "username=oauth2"; echo "password=${GIT_TOKEN}"; }; f'
 
           if [[ "$OSTYPE" == "darwin"* ]]; then
