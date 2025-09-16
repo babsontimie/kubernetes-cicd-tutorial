@@ -36,7 +36,7 @@ jobs:
       - name: Checkout GitOps repository
         uses: actions/checkout@v4
         with:
-          repository: babsontimie/grade-api-gitops
+          repository: babsontimie/kubernetes-api-gitops
           token: ${{ secrets.GITOPS_PAT }}
           path: gitops
 
@@ -53,4 +53,4 @@ jobs:
           # Commit and push changes
           git add deployment.yaml
           git commit -m "Update image to ${{ github.sha }}" || echo "No changes to commit"
-          git push https://oauth2:${{ secrets.GITOPS_PAT }}@github.com/babsontimie/grade-api-gitops.git main
+          git push https://oauth2:${{ secrets.GITOPS_PAT }}@github.com/babsontimie/kubernetes-api-gitops.git main
