@@ -30,33 +30,18 @@ jobs:
         shell: bash
         env:
           GIT_TOKEN: ${{ secrets.GITOPS_PAT }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
         run: |
-          # Configure git credential store
-          #git config --global credential.helper store
-          #echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
-          # Secure one-shot credential helper (no writing to disk)
-
-          # git config --global credential.helper '!f() { echo "username=oauth2"; echo "password=${GIT_TOKEN}"; }; f'
-
-          # # Remove any existing gitops directory
-          # rm -rf gitops
-          
-          # # Clone repository using HTTPS URL without token
-          # git clone https://github.com/babsontimie/grade-api-gitops.git gitops
-          # cd gitops
-
-          run: |
-          # Clone using token embedded in HTTPS URL (works reliably for initial auth)
           git clone https://oauth2:${GIT_TOKEN}@github.com/babsontimie/grade-api-gitops.git gitops
           cd gitops
 
-         # Set up credential helper for future Git commands (like push)
           git config --global credential.helper '!f() { echo "username=oauth2"; echo "password=${GIT_TOKEN}"; }; f'
 
           if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i '' "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
+            sed -i '' "s|image: ghcr.io/${REPO}:.*|image: ghcr.io/${REPO}:${SHA}|g" deployment.yaml
           else
-            sed -i "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
+            sed -i "s|image: ghcr.io/${REPO}:.*|image: ghcr.io/${REPO}:${SHA}|g" deployment.yaml
           fi
           
           # Commit changes
