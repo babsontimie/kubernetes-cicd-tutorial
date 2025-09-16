@@ -46,6 +46,7 @@ jobs:
           # Update image tag in deployment.yaml and argocd-application.yaml
           sed -i "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
           sed -i "s|repoURL: ghcr.io/${{ github.repository }}:.*|repoURL: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" argocd-application.yaml
+          kubectl apply -f deployment.yaml
           kubectl apply -f argocd-application.yaml
           # Configure Git
           git config --global user.name "GitHub Actions"
