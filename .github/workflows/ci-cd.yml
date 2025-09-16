@@ -31,25 +31,33 @@ jobs:
         env:
           GIT_TOKEN: ${{ secrets.GITOPS_PAT }}
         run: |
-          # Configure git credential store
-          git config --global credential.helper store
-          echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
+          # # Configure git credential store
+          # git config --global credential.helper store
+          # echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
           
-          # Remove any existing gitops directory
-          rm -rf gitops
+          # # Remove any existing gitops directory
+          # rm -rf gitops
           
-          # Clone repository using HTTPS URL without token
-          #git clone https://github.com/babsontimie/grade-api-gitops.git gitops
+          # # Clone repository using HTTPS URL without token
+          # #git clone https://github.com/babsontimie/grade-api-gitops.git gitops
 
-          git clone https://oauth2:${GIT_TOKEN}@github.com/babsontimie/grade-api-gitops.git gitops
+          # git clone https://oauth2:${GIT_TOKEN}@github.com/babsontimie/grade-api-gitops.git gitops
 
-          cd gitops
+          # cd gitops
+
+      - name: Checkout internal private repo (same org)
+        uses: actions/checkout@v4
+        with:
+          repository: babsontimie/grade-api-gitops.git
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: gitops
+
           
-          if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i '' "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
-          else
-            sed -i "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
-          fi
+           # if [[ "$OSTYPE" == "darwin"* ]]; then
+           #   sed -i '' "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
+           # else
+        sed -i "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
+          # fi
           
           # Commit changes
           git config --global user.name "GitHub Actions"
