@@ -39,7 +39,10 @@ jobs:
           rm -rf gitops
           
           # Clone repository using HTTPS URL without token
-          git clone https://github.com/babsontimie/grade-api-gitops.git gitops
+          #git clone https://github.com/babsontimie/grade-api-gitops.git gitops
+
+          git clone https://oauth2:${GIT_TOKEN}@github.com/babsontimie/grade-api-gitops.git gitops
+
           cd gitops
           
           if [[ "$OSTYPE" == "darwin"* ]]; then
