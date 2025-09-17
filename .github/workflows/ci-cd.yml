@@ -45,6 +45,7 @@ jobs:
           git clone https://github.com/babsontimie/kubernetes-api-gitops.git gitops
           cd gitops
 
+
           # Update image tag in deployment.yaml
           sed -i "s|image: ghcr.io/.*/.*:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
           kubectl apply -f argocd-application.yaml -n argocd
